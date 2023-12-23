@@ -1,28 +1,71 @@
-## Usage
 
-```bash
-$ npm install # or pnpm install or yarn install
+# SMS Service
+
+## Overview
+```markdown
+Welcome to the SMS Service repository! This project aims to provide a reliable and efficient way to send SMS messages programmatically. Whether for notifications, verification, or marketing purposes, this service is designed to meet various messaging needs.
 ```
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+## Features
+```markdown
+- **Direct SMS Sending**: Easily send SMS messages to any number globally.
+- **Customizable Templates**: Use or modify templates for different types of messages.
+- **Detailed Logging**: Keep track of messages, delivery status, and errors for analytics and debugging.
+```
 
-## Available Scripts
+## Getting Started
+### Prerequisites
+```markdown
+- Ensure you have [Node.js](https://nodejs.org/) installed on your system.
+- An account with a supported SMS gateway provider.
+```
 
-In the project directory, you can run:
+### Installation
+```sh
+1. Clone the repository:
+   git clone https://github.com/Elias-Traunbauer/SMS-Service.git
+2. Navigate to the project directory:
+   cd SMS-Service
+3. Install the dependencies:
+   npm install
+```
 
-### `npm run dev`
+### Configuration
+```markdown
+- Rename `.env.example` to `.env`.
+- Fill in the necessary details like API keys and service configurations.
+```
 
-Runs the app in the development mode.<br>
-Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
+## Usage
+```markdown
+Describe how to use the service, including any scripts or commands to send messages.
+```
 
-### `npm run build`
+## Contributing
+```markdown
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
+1. Fork the Project
+2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
+3. Commit your Changes (git commit -m 'Add some AmazingFeature')
+4. Push to the Branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## License
+```markdown
+Distributed under the MIT License. See `LICENSE` for more information.
+```
 
-## Deployment
+## Contact
+```markdown
+Your Name - [@YourTwitter](https://twitter.com/yourtwitter) - email
 
-Learn more about deploying your application with the [documentations](https://vitejs.dev/guide/static-deploy.html)
+Project Link: [https://github.com/Elias-Traunbauer/SMS-Service](https://github.com/Elias-Traunbauer/SMS-Service)
+```
+
+## Acknowledgements
+```markdown
+- [Node.js](https://nodejs.org/)
+- [Any other libraries or services used]
+```
