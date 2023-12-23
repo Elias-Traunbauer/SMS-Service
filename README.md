@@ -17,7 +17,6 @@ Welcome to the SMS Service repository! This project aims to provide a reliable a
 ### Prerequisites
 
 - Ensure you have [Node.js](https://nodejs.org/) installed on your system.
-- An account with a supported SMS gateway provider.
 
 
 ### Installation
@@ -28,7 +27,7 @@ Welcome to the SMS Service repository! This project aims to provide a reliable a
    ```
 2. Navigate to the project directory:
 ```sh
-   cd SMS-Service
+   cd SMS-Service\\Frontend
    ```
 3. Install the dependencies:
 ```sh
@@ -63,7 +62,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [@YourTwitter](https://twitter.com/yourtwitter) - email
+Traunbauer Elias [https://eliastraunbauer.com](https://eliastraunbauer.com)
 
 Project Link: [https://github.com/Elias-Traunbauer/SMS-Service](https://github.com/Elias-Traunbauer/SMS-Service)
 
@@ -71,5 +70,4 @@ Project Link: [https://github.com/Elias-Traunbauer/SMS-Service](https://github.c
 ## Acknowledgements
 
 - [Node.js](https://nodejs.org/)
-- [Any other libraries or services used]
 
