@@ -27,7 +27,7 @@ Welcome to the SMS Service repository! This project aims to provide a reliable a
    ```
 2. Navigate to the project directory:
 ```sh
-   cd SMS-Service\\Frontend
+   cd SMS-Service\Frontend
    ```
 3. Install the dependencies:
 ```sh
