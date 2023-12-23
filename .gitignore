@@ -1,0 +1,15 @@
+
+
+# VS22
+bin/*
+!bin/Debug
+!bin/Release
+obj
+bin
+.bin
+node_modules
+.vs
+*.cache
+
+
+
