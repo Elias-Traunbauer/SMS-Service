@@ -52,6 +52,10 @@ namespace SIM800CATController
                 {
                     throw new InvalidOperationException("Unable to connect to the serial port.");
                 }
+                if (!CMGF())
+                {
+                    throw new SIM800CException("Unable to enable text mode for SMS.");
+                }
             });
         }
 
@@ -85,6 +89,15 @@ namespace SIM800CATController
         {
             return SendCommand("AT");
         }
+        
+        /// <summary>
+        /// Enables text mode for SMS.
+        /// </summary>
+        /// <returns></returns>
+        private bool CMGF()
+        {
+            return SendCommand("AT+CMGF=1");
+        }
 
         /// <summary>
         /// Synchronously sends a command and reads the response.
@@ -100,6 +113,11 @@ namespace SIM800CATController
             _serialPort.WriteLine(command + "\r");
             string response = _serialPort.ReadLine();
             return response.Trim() == "OK";
+        }
+
+        public bool SendSMS(string phoneNumber, string message)
+        {
+            return SendCommand($"AT+CMGS=\"{phoneNumber}\"\r{message}\x1A");
         }
 
         public void Dispose()

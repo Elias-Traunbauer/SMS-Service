@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIM800CATController", "SIM800CATController\SIM800CATController.csproj", "{10FD9957-9816-485B-94CB-3C72CF75E1E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIM800CATController", "SIM800CATController\SIM800CATController.csproj", "{10FD9957-9816-485B-94CB-3C72CF75E1E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{F684A2AC-6EFE-4DAD-99AA-E57A84D63BAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{F684A2AC-6EFE-4DAD-99AA-E57A84D63BAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIMTEST", "SIMTEST\SIMTEST.csproj", "{17D421B7-922A-4344-BC19-5BF816094B31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F684A2AC-6EFE-4DAD-99AA-E57A84D63BAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F684A2AC-6EFE-4DAD-99AA-E57A84D63BAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F684A2AC-6EFE-4DAD-99AA-E57A84D63BAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17D421B7-922A-4344-BC19-5BF816094B31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D421B7-922A-4344-BC19-5BF816094B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D421B7-922A-4344-BC19-5BF816094B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D421B7-922A-4344-BC19-5BF816094B31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

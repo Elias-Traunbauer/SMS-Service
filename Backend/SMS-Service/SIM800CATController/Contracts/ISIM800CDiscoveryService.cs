@@ -8,6 +8,6 @@ namespace SIM800CATController.Contracts
 {
     public interface ISIM800CDiscoveryService
     {
-        public Task<string> Discover();
+        public Task<string?> Discover();
     }
 }
