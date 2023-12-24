@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace SIM800CATController
 {
-    public class SIM800CService
+    public class SIM800CService : Contracts.ISIM800CService
     {
+        public async Task<bool> SendSMS(string phoneNumber, string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
