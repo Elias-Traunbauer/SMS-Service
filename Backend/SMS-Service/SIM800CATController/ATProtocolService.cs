@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO.Ports;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SIM800CATController
@@ -20,8 +21,8 @@ namespace SIM800CATController
                 StopBits = StopBits.One,
                 DataBits = 8,
                 Handshake = Handshake.None,
-                ReadTimeout = 500,
-                WriteTimeout = 500
+                ReadTimeout = 10000,
+                WriteTimeout = 10000
             };
         }
 
@@ -35,28 +36,29 @@ namespace SIM800CATController
             _serialPort.PortName = _portName;
         }
 
-        /// <summary>
-        /// Asynchronously connects to the serial port and checks the AT command.
-        /// </summary>
-        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task ConnectAsync()
         {
-            await Task.Run(() =>
+            try
             {
-                if (!_serialPort.IsOpen)
+                await Task.Run(() =>
                 {
-                    _serialPort.Open();
-                    _isConnected = true;
-                }
-                if (!AT())
-                {
-                    throw new InvalidOperationException("Unable to connect to the serial port.");
-                }
-                if (!CMGF())
-                {
-                    throw new SIM800CException("Unable to enable text mode for SMS.");
-                }
-            });
+                    if (!_serialPort.IsOpen)
+                    {
+                        _serialPort.Open();
+                        _isConnected = true;
+                    }
+                    ATECHO(false);
+                    if (!AT() || !CMGF())
+                    {
+                        throw new InvalidOperationException("Failed to initialize the device.");
+                    }
+                });
+            }
+            catch (Exception)
+            {
+                await Disconnect(); // Ensure disconnection on failure
+                throw; // Re-throw the exception to the caller
+            }
         }
 
         public async Task Disconnect()
@@ -71,54 +73,140 @@ namespace SIM800CATController
             });
         }
 
-        /// <summary>
-        /// Sends an AT command asynchronously to check the connection with the module.
-        /// </summary>
-        /// <returns>A task representing the asynchronous operation with a boolean result indicating success.</returns>
         public async Task<bool> ATAsync()
         {
-            return await Task.Run(() => AT());
+            try
+            {
+                return await Task.Run(() => AT());
+            }
+            catch (Exception)
+            {
+                await Disconnect(); // Ensure disconnection on failure
+                throw; // Consider whether to return false or re-throw based on your error handling policy
+            }
         }
 
-        /// <summary>
-        /// Sends a command to the connected device and reads the response.
-        /// </summary>
-        /// <param name="command">The command to send.</param>
-        /// <returns>True if the device responded with 'OK'.</returns>
         private bool AT()
         {
-            return SendCommand("AT");
-        }
-        
-        /// <summary>
-        /// Enables text mode for SMS.
-        /// </summary>
-        /// <returns></returns>
-        private bool CMGF()
-        {
-            return SendCommand("AT+CMGF=1");
+            try
+            {
+                return SendCommand("AT") == "OK";
+            }
+            catch (Exception)
+            {
+                Disconnect().Wait(); // Synchronously wait for disconnection to ensure state
+                throw; // Propagate the exception up
+            }
         }
 
-        /// <summary>
-        /// Synchronously sends a command and reads the response.
-        /// </summary>
-        /// <param name="command">The command to send.</param>
-        /// <returns>True if the response is 'OK'.</returns>
-        private bool SendCommand(string command)
+        private bool ATECHO(bool enable)
+        {
+            try
+            {
+                return SendCommand($"ATE{(enable ? "1" : "0")}") == "OK";
+            }
+            catch (Exception)
+            {
+                Disconnect().Wait();
+                throw;
+            }
+        }
+
+        private bool CMGF()
+        {
+            try
+            {
+                return SendCommand("AT+CMGF=1") == "OK";
+            }
+            catch (Exception)
+            {
+                Disconnect().Wait();
+                throw;
+            }
+        }
+
+        private string SendCommand(string command, bool newLineCommit = true, bool noResponsePossible = false)
         {
             if (!_isConnected || !_serialPort.IsOpen)
             {
                 throw new InvalidOperationException("Not connected to a serial port.");
             }
-            _serialPort.WriteLine(command + "\r");
-            string response = _serialPort.ReadLine();
-            return response.Trim() == "OK";
+
+            try
+            {
+                _serialPort.WriteLine(command + (newLineCommit ? "\r" : ""));
+
+                StringBuilder responseBuilder = new StringBuilder();
+                char[] buffer = new char[1]; // Buffer to hold each character
+
+                try
+                {
+                    // Loop until the end conditions are met ("OK" or "ERROR")
+                    while (true)
+                    {
+                        // Read a single character
+                        int bytesRead = _serialPort.Read(buffer, 0, buffer.Length);
+                        if (bytesRead > 0 && buffer[0] != '\r' && buffer[0] != '\n')
+                        {
+                            responseBuilder.Append(buffer, 0, bytesRead);
+                        }
+
+                        // Convert the current buffer into a string to check for end conditions
+                        string response = responseBuilder.ToString();
+                        if (response.Contains("OK") || response.Contains("ERROR") || response.Contains('>'))
+                        {
+                            break; // Break the loop if the end condition is met
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    if (!noResponsePossible)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        ATECHO(false);
+                    }
+                }
+
+                return responseBuilder.ToString(); // Return the accumulated response
+            }
+            catch (Exception)
+            {
+                Disconnect().Wait();
+                throw;
+            }
         }
 
         public bool SendSMS(string phoneNumber, string message)
         {
-            return SendCommand($"AT+CMGS=\"{phoneNumber}\"\r{message}\x1A");
+            try
+            {
+                // Send the initial command to start SMS prompt
+                string initialResponse = SendCommand($"AT+CMGS=\"{phoneNumber}\"");
+
+                // Check for the prompt to input the message text
+                if (!initialResponse.EndsWith('>') && false)
+                {
+                    return false; // If no prompt, something went wrong.
+                }
+
+                // Send the message text followed by the Ctrl-Z character, and read the final response
+                string finalResponse = SendCommand(message + "\x1A", false, true);
+
+                // Check if the final response indicates success
+                return finalResponse.Contains("+CMGS:") && finalResponse.Contains("OK");
+            }
+            catch (Exception)
+            {
+                Disconnect().Wait();
+                throw;
+            }
         }
+
 
         public void Dispose()
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SIM800CATController.Contracts
 {
-    public interface ISIM800CService
+    public interface ISIM800CService : IDisposable
     {
         public Task<bool> SendSMS(string phoneNumber, string message);
     }

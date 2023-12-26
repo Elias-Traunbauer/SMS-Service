@@ -14,14 +14,22 @@ namespace SIM800CATController
         private ATProtocolService? _service;
         private string? _portName;
 
+        public void Dispose()
+        {
+            _service?.Dispose();
+        }
+
         [MemberNotNull(nameof(_service), nameof(_portName))]
         public async Task EnsureConnected()
         {
-            // Explicitly define _portName as non-nullable local variable.
+            if (_portName == null)
+            {
+                // Explicitly define _portName as non-nullable local variable.
 #pragma warning disable CS8774 // Member must have a non-null value when exiting.
-            string discoveredPortName = await _discoveryService.Discover() ?? throw new SIM800CException("SIM800C module not found.");
+                string discoveredPortName = await _discoveryService.Discover() ?? throw new SIM800CException("SIM800C module not found.");
 #pragma warning restore CS8774 // Member must have a non-null value when exiting.
-            _portName = discoveredPortName; // Assign the non-null discoveredPortName to _portName
+                _portName = discoveredPortName; // Assign the non-null discoveredPortName to _portName
+            }
 
             // Ensure _service is not null or properly initialized
             if (_service == null)
