@@ -1,0 +1,6 @@
+@Maturaball_Tischreservierung_HostAddress = http://localhost:5150
+
+GET {{Maturaball_Tischreservierung_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

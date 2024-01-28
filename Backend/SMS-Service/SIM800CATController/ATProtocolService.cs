@@ -161,7 +161,6 @@ namespace SIM800CATController
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
                     if (!noResponsePossible)
                     {
                         throw;
