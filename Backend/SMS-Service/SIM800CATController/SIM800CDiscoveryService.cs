@@ -32,9 +32,9 @@ namespace SIM800CATController
                         return portName;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    
+                    Console.WriteLine($"Failed to connect to port {portName}: {ex.Message}");
                 }
             }
             return null;
