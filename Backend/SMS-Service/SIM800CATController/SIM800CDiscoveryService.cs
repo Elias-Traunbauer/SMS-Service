@@ -13,6 +13,11 @@ namespace SIM800CATController
         public async Task<string?> Discover()
         {
             string[] portNames = System.IO.Ports.SerialPort.GetPortNames();
+            Console.WriteLine("Available ports:");
+            foreach (string portName in portNames)
+            {
+                Console.WriteLine(portName);
+            }
             foreach (string portName in portNames)
             {
                 _service = new ATProtocolService(portName);
