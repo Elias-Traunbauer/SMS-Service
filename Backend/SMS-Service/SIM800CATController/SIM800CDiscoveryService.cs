@@ -20,9 +20,10 @@ namespace SIM800CATController
             }
             foreach (string portName in portNames)
             {
-                _service = new ATProtocolService(portName);
+                Console.WriteLine($"Trying port {portName}...");
                 try
                 {
+                    _service = new ATProtocolService(portName);
                     await _service.ConnectAsync();
                     var result = await _service.ATAsync();
                     if (result)
